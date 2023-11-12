@@ -5,6 +5,7 @@ const grantAccessContainer = document.querySelector(".grant-location-container")
 const searchForm = document.querySelector("[data-searchForm]")
 const loadingScreen = document.querySelector(".loading-container");
 const userInfoContainer = document.querySelector(".user-info-container");
+const notFoundContainer = document.querySelector(".not-found-container");
 const api_Key = "9595f4535cdc6504e9ecb7d1951d7e50";
 
 let currentTab = userTab;
@@ -14,7 +15,6 @@ currentTab.classList.add("current-tab");
 getfromSessionStorage();
 
 // Tab switching
-
 function switchTab(clickedTab){
     if(clickedTab != currentTab){
         currentTab.classList.remove("current-tab");
@@ -25,6 +25,7 @@ function switchTab(clickedTab){
             // I am on your weather container, and now click on search weather tab so active search weather tab
             userInfoContainer.classList.remove("active");
             grantAccessContainer.classList.remove("active");
+            notFoundContainer.classList.remove("active");
             searchForm.classList.add("active");
         }
         else{
@@ -32,6 +33,8 @@ function switchTab(clickedTab){
             grantAccessContainer.classList.remove("active");
             searchForm.classList.remove("active");
             userInfoContainer.classList.remove("active");
+            notFoundContainer.classList.remove("active");
+
 
             // Now, i am on your weather section,so i have to display weathe .... so lets check local storage first for coordinates, if we have saved them there
             getfromSessionStorage();
@@ -71,15 +74,20 @@ async function fetchUserWeatherInfo(coordinates){
 
     // API call 
     try {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_Key}`);
-        const data = await response.json();
-
-        // Make loader invisible
-        loadingScreen.classList.remove("active");
-
-        userInfoContainer.classList.add("active");
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_Key}&units=metric`);
         
-        renderWeatherInfo(data);
+        if(response.status !== 200){
+            loadingScreen.classList.remove("active");
+            notFoundContainer.classList.add("active");
+        }else{
+            const data = await response.json();
+            // Make loader invisible
+            loadingScreen.classList.remove("active");
+    
+            userInfoContainer.classList.add("active");
+            
+            renderWeatherInfo(data);
+        }
 
     } catch (error) {
 
@@ -107,13 +115,13 @@ function renderWeatherInfo(weatherInfo){
     desc.innerText = weatherInfo?.weather?.[0]?.description;
     weatherIcon.src = `http://openweathermap.org/img/w/${weatherInfo?.weather?.[0]?.icon}.png`;
 
-    temperature.innerText = weatherInfo?.main?.temp;
+    temperature.innerText = `${weatherInfo?.main?.temp} °C`;
 
-    windspeed.innerText = weatherInfo?.wind?.speed;
+    windspeed.innerText = `${weatherInfo?.wind?.speed}m/s`;
 
-    humidity.innerText = weatherInfo?.main?.humidity;
+    humidity.innerText = `${weatherInfo?.main?.humidity}%`;
 
-    cloudiness.innerText = weatherInfo?.clouds?.all;
+    cloudiness.innerText = `${weatherInfo?.clouds?.all}%`;
 }
 
 function getLocation(){
@@ -156,15 +164,25 @@ async function fetchSearchWeatherInfo(city){
     grantAccessContainer.classList.remove("active");
 
     try {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_Key}`);
-        
-        const data = await response.json();
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_Key}&units=metric`);
 
-        loadingScreen.classList.remove("active");
-        userInfoContainer.classList.add("active");
-        renderWeatherInfo(data);
+        if(response.status !== 200){
+            loadingScreen.classList.remove("active");
+            notFoundContainer.classList.add("active");
+        }
+        else{
+            
+            
+            const data = await response.json();
+            
+            loadingScreen.classList.remove("active");
+            userInfoContainer.classList.add("active");
+            renderWeatherInfo(data);
+        }
+        
     } catch (error) {
         loadingScreen.classList.remove("active");
+        notFoundContainer.classList.add("active");
         alert("Enter valid city name");
         console.log("Search city error occurs => ", error);
     }

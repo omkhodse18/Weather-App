@@ -20,7 +20,7 @@
         <div class="weather-container">
 
             <!-- grant-location-container -->
-            <div class="grant-location-container">
+            <div class="grant-location-container sub-container">
                 <img src="./images/location.png" width="80" height="80" loading="lazy">
                 <p>Grant location access</p>
                 <p>Allow access to get weather Information</p>
@@ -38,14 +38,14 @@
         
             <!-- Loading-screen-container  -->
 
-            <div class="loading-container">
+            <div class="loading-container sub-container">
                 <img src="/images/loading.gif" width="150" height="150">
-                <p>Loading</p>
+                <p>Loading...</p>
             </div>
 
             <!-- your-weather-container  -->
 
-            <div class="user-info-container">
+            <div class="user-info-container sub-container">
                 <!-- city name and flag  -->
                 <div class="name">
                     <p data-cityName></p>
@@ -62,28 +62,38 @@
                 <p data-temprature></p>
 
                 <!-- parameters-cards  -->
-                <!-- card-1  -->
-                <div class="parameter">
-                    <img src="/images/wind.png">
-                    <p>windspeed</p>
-                    <p data-windSpeed></p>
+                <div class="parameter-container">
+                    <!-- card-1  -->
+                    <div class="parameter">
+                        <img src="/images/wind.png">
+                        <p>windspeed</p>
+                        <p data-windSpeed></p>
+                    </div>
+
+                    <!-- card-2  -->
+                    <div class="parameter">
+                        <img src="/images/humidity.png">
+                        <p>Humidity</p>
+                        <p data-humidity></p>
+                    </div>
+
+                    <!-- card-3  -->
+                    <div class="parameter">
+                        <img src="/images/cloud.png">
+                        <p>Clouds</p>
+                        <p data-cloudiness></p>
+                    </div>
+
                 </div>
 
-                <!-- card-2  -->
-                <div class="parameter">
-                    <img src="/images/humidity.png">
-                    <p>Humidity</p>
-                    <p data-humidity></p>
-                </div>
-
-                <!-- card-2  -->
-                <div class="parameter">
-                    <img src="/images/cloud.png">
-                    <p>Clouds</p>
-                    <p data-cloudiness></p>
-                </div>
 
 
+            </div>
+
+            <!-- Not found  -->
+            <div class="not-found-container sub-container">
+                <img src="/images/not-found.png" width="150px" height="150px" loading="lazy">
+                <p>City not found</p>
             </div>
 
         </div>
