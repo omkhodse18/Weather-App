@@ -176,6 +176,7 @@ async function fetchSearchWeatherInfo(city){
             const data = await response.json();
             
             loadingScreen.classList.remove("active");
+            notFoundContainer.classList.remove("active");
             userInfoContainer.classList.add("active");
             renderWeatherInfo(data);
         }
